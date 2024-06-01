@@ -9,7 +9,7 @@ export const uploadImage = async(req, res) =>{
     try {
         const file = await File.create(fileObject);
 
-        res.status(200).json({path:`http://localhost:8000/file/${file._id}`})
+        res.status(200).json({path:`https://file-sharing-ohyp.onrender.com/file/${file._id}`})
     } 
     catch (error) {
         console.log("Error in uploadImage ",error.message);
