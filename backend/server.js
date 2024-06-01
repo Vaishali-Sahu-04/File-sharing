@@ -6,7 +6,7 @@ import connectToMongoDb from './db/connect.js'
 import path from 'path'
 
 dotenv.config();
-//const __dirname = path.resolve();
+const __dirname = path.resolve();
 const app = express();
 
 app.use(express.urlencoded({extended:true}));
@@ -14,11 +14,11 @@ app.use(express.json())
 app.use(cors({origin: "http://localhost:3000"}));
 app.use('/',router);
 
-// app.use(express.static(path.join(__dirname,"/frontend/build")))
+app.use(express.static(path.join(__dirname,"/frontend/dist")))
 
-// app.get("*",(req,res)=>{
-//     res.sendFile(path.join(__dirname,"frontend","build","index.html"))
-// })
+app.get("*",(req,res)=>{
+    res.sendFile(path.join(__dirname,"frontend","dist","index.html"))
+})
 
 connectToMongoDb();
 const PORT = process.env.PORT || 8000;
