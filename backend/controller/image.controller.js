@@ -1,6 +1,5 @@
 import File from "../model/file.model.js"
 
-
 export const uploadImage = async(req, res) =>{
 
     const fileObject = {
@@ -9,6 +8,7 @@ export const uploadImage = async(req, res) =>{
     }
     try {
         const file = await File.create(fileObject);
+
         res.status(200).json({path:`http://localhost:8000/file/${file._id}`})
     } 
     catch (error) {
@@ -23,6 +23,11 @@ export const downloadImage = async(req,res) => {
         file.downloadCount++;
         await file.save();
         res.download(file.path, file.name);
+        // fs.unlink(req.file.path, (err) => {
+        //     if (err) {
+        //         console.log("Error in deleting file from local uploads folder: ", err.message);
+        //     }
+        // });
     } 
     catch (error) {
         console.log("Error in downloadImage ",error.message);

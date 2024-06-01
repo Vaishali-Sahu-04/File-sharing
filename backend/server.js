@@ -11,7 +11,7 @@ const app = express();
 
 app.use(express.urlencoded({extended:true}));
 app.use(express.json())
-app.use(cors({ origin: 'http://localhost:3000' }));
+app.use(cors({origin: "http://localhost:3000"}));
 app.use('/',router);
 
 // app.use(express.static(path.join(__dirname,"/frontend/build")))
