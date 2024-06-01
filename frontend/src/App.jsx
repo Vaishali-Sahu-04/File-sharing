@@ -1,32 +1,48 @@
-import { useState } from 'react'
+import {useEffect, useRef, useState} from 'react'
+import { uploadFile } from './services/api.js';
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const [file,setFile]=useState('');
+  const [result, setResult] = useState('');
+  const fileInputRef=useRef();
+
+  useEffect(()=>{
+    const getImage = async() => {
+      if(file){
+        const data=new FormData();
+        data.append("name",file.name);
+        data.append("file",file);
+        //console.log(data);
+        const res = await uploadFile(data);
+        setResult(res.path);
+      }
+    }
+    getImage();
+  },[file])
+
+  const onUploadClick = () => {
+    fileInputRef.current.click()
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className='container'>
+      <img src={"image.jpg"} alt='image' className='img' />
+      <div className='wrapper'>
+        <h1>Simple file sharing!</h1>
+        <p>Upload and share the download link.</p>
+        
+        <button onClick={() => onUploadClick()}>Upload</button>
+        <input
+          type="file"
+          ref={fileInputRef}
+          style={{ display: "none" }}
+          onChange={(e) => setFile(e.target.files[0])}
+        />
+        <a href={result} target='_blank' className='anchor'>{result}</a>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
